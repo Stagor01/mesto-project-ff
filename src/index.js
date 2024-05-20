@@ -1,6 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
-import { addCard, deleteCard, likeCard } from "./components/card";
+import { addCard, deleteCard, likeCard, openImage } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
@@ -20,6 +20,7 @@ const cardsContainer = content.querySelector(".places__list");
 const formElementAdd = document.querySelector('form[name="new-place"]');
 const namePlaceInput = document.querySelector('.popup__input_type_card-name');
 const linkImagePlaceInput = document.querySelector('.popup__input_type_url');
+
 
 // Создаем массив всех попапов
 const popups = document.querySelectorAll(".popup");
@@ -82,7 +83,7 @@ function handleAddPlaceCardFormSubmit(evt) {
   const cardData = {
     name: namePlaceInput.value, 
     link: linkImagePlaceInput.value};
-  const newCard = addCard(cardData, deleteCard, likeCard);
+  const newCard = addCard(cardData, deleteCard, likeCard, openImage);
   cardsContainer.prepend(newCard);
   closeModal(evt.currentTarget.closest('.popup'));
   formElementAdd.reset(); //сбрасываем поля
@@ -92,5 +93,5 @@ formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
 
 // Вывести карточки на страницу
 initialCards.forEach((card) => {
-  cardsContainer.append(addCard(card, deleteCard, likeCard));
+  cardsContainer.append(addCard(card, deleteCard, likeCard, openImage));
 });
