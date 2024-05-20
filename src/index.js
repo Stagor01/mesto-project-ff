@@ -1,6 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
-import { addCard, deleteCard } from "./components/card";
+import { addCard, deleteCard, likeCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
@@ -82,7 +82,7 @@ function handleAddPlaceCardFormSubmit(evt) {
   const cardData = {
     name: namePlaceInput.value, 
     link: linkImagePlaceInput.value};
-  const newCard = addCard(cardData, deleteCard);
+  const newCard = addCard(cardData, deleteCard, likeCard);
   cardsContainer.prepend(newCard);
   closeModal(evt.currentTarget.closest('.popup'));
   formElementAdd.reset(); //сбрасываем поля
@@ -92,5 +92,5 @@ formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
 
 // Вывести карточки на страницу
 initialCards.forEach((card) => {
-  cardsContainer.append(addCard(card, deleteCard));
+  cardsContainer.append(addCard(card, deleteCard, likeCard));
 });
