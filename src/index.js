@@ -7,14 +7,19 @@ import { openModal, closeModal } from "./components/modal";
 const content = document.querySelector(".content");
 const profileEditButton = content.querySelector(".profile__edit-button");
 const popupEdit = document.querySelector(".popup_type_edit");
+// Элементы для формы редактирования
 const formElementEdit = document.querySelector('form[name="edit-profile"]');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+// Элементы для добавления карточек
 const profileAddButton = content.querySelector(".profile__add-button");
 const popupAdd = document.querySelector(".popup_type_new-card");
 const cardsContainer = content.querySelector(".places__list");
+const formElementAdd = document.querySelector('form[name="new-place"]');
+const namePlaceInput = document.querySelector('.popup__input_type_card-name');
+const linkImagePlaceInput = document.querySelector('.popup__input_type_url');
 
 // Создаем массив всех попапов
 const popups = document.querySelectorAll(".popup");
@@ -61,14 +66,29 @@ function editProfile(name, job) {
 }
 
 // Обработчик отправки формы
-function handleFormSubmit(evt) {
+function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
   editProfile(nameInput.value, jobInput.value);
   closeModal(evt.currentTarget.closest('.popup'));
 }
 
-formElementEdit.addEventListener('submit', handleFormSubmit);
+formElementEdit.addEventListener('submit', handleEditFormSubmit);
+
+// Функция добавления карточки с местом
+function handleAddPlaceCardFormSubmit(evt) {
+  evt.preventDefault();
+
+  const cardData = {
+    name: namePlaceInput.value, 
+    link: linkImagePlaceInput.value};
+  const newCard = addCard(cardData, deleteCard);
+  cardsContainer.prepend(newCard);
+  closeModal(evt.currentTarget.closest('.popup'));
+  formElementAdd.reset(); //сбрасываем поля
+}
+
+formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
 
 // Вывести карточки на страницу
 initialCards.forEach((card) => {
