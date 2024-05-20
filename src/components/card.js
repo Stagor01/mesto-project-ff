@@ -1,4 +1,4 @@
-import { openModal, closeModal } from "./modal";
+import { openModal } from "./modal";
 
 // Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
