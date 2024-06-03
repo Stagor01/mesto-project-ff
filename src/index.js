@@ -41,14 +41,6 @@ popups.forEach((popup) => {
   });
 });
 
-// Функция закрытия попапа по Escape
-export function closeByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    closeModal(openedPopup);
-  }
-}
-
 // Слушатели на открытие попапов
 profileEditButton.addEventListener("click", () => {
   setProfileData(nameInput, jobInput); // устанавливаем данные по-умолчанию
