@@ -20,11 +20,10 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
+          <div
             class="profile__image"
-            src="<%=require('./images/avatar.jpg')%>"
-            alt="Аватарка профиля"
-          />
+            style="background-image: url('<%= require('./images/avatar.jpg') %>');"
+          ></div>
           <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
             <button class="profile__edit-button" type="button"></button>
@@ -119,6 +118,29 @@
           <img src="" alt="" class="popup__image" />
           <p class="popup__caption"></p>
         </div>
+      </div>
+    </div>
+    <div class="popup popup_type_avatar">
+      <div class="popup__content">
+        <button
+          type="button"
+          class="popup__close"
+          id="profile-popup-close"
+        ></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form class="popup__form" name="edit-avatar" novalidate>
+          <input
+            type="url"
+            name="link"
+            id="link-avatar"
+            class="popup__input popup__input_type_url"
+            placeholder="Ссылка на картинку"
+            data-error="Разрешены только ссылки на изображения"
+            required
+          />
+          <span class="popup__error link-input-error"></span>
+          <button type="submit" class="button popup__button">Сохранить</button>
+        </form>
       </div>
     </div>
 

@@ -15,12 +15,14 @@ import {
 import { 
   profileAddButton, popupAdd, cardsContainer, formElementAdd, namePlaceInput, linkImagePlaceInput
 } from "./components/constats";
+// Элементы для изменения аватара
+import { formProfileImage, profileImage, popupAvatar, editAvatarButton } from "./components/constats";
 
 // Для валидации
 import { enableValidation, clearValidation, validationConfig } from "./components/validation";
 
 // Для запросов на сервер
-import { getCards, getUserInfo, patchUserInfo, postCard } from "./components/api";
+import { getCards, getUserInfo, patchAvatar, patchUserInfo, postCard } from "./components/api";
 
 let profileId = '';
 
@@ -51,8 +53,15 @@ profileEditButton.addEventListener("click", () => {
 
 profileAddButton.addEventListener("click", () => {
   clearValidation(formElementAdd, validationConfig);
+  formElementAdd.reset();
   openModal(popupAdd);
 });
+
+profileImage.addEventListener("click", () => {
+  clearValidation(formProfileImage, validationConfig);
+  formProfileImage.reset();
+  openModal(popupAvatar);
+})
 
 // Функция открытия попапа изображения
 function openImagePopup(imageLink, imageDescription) {
@@ -99,6 +108,22 @@ function handleAddPlaceCardFormSubmit(evt) {
 }
 
 formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
+
+// Функция изменения аватара
+function handleEditAvatarFormSubmit(evt) {
+  evt.preventDefault();
+  const buttonText = editAvatarButton.textContent;
+  editAvatarButton.textContent = 'Сохранение...'
+
+  patchAvatar(formProfileImage.link.value)
+    .then((profile) => {
+      profileImage.style.backgroundImage = `url(${profile.avatar})`;
+      closeModal(popupAvatar);
+    })
+    .finally(() => (editAvatarButton.textContent = buttonText));
+}
+
+formProfileImage.addEventListener('submit', handleEditAvatarFormSubmit);
 
 // Функция, которая выводит карточки на страницу
 function connectCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {

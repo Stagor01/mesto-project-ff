@@ -7,11 +7,11 @@ const cardTemplate = document.querySelector('#card-template').content;
 function addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
     const cardImage = cardElement.querySelector('.card__image');
-    const likeCounts = cardElement.querySelector('.card__like-counter');
+    const cardLikeCounter = cardElement.querySelector('.card__like-counter');
     cardImage.src = cardData.link;
     cardImage.alt = cardData.name;
     cardElement.querySelector('.card__title').textContent = cardData.name;
-    likeCounts.textContent = cardData.likes.length;
+    cardLikeCounter.textContent = cardData.likes.length;
     
     const deleteButton = cardElement.querySelector('.card__delete-button');
     if (profileId != cardData.owner['_id']) {
@@ -40,12 +40,12 @@ function deleteCardFunction(evt, cardId) {
 // Функция лайка карточки
 function likeCard(card, cardElement, profileId) {
   const cardLikeButton = cardElement.querySelector('.card__like-button');
-  const likeCounts = cardElement.querySelector('.like__counts');
+  const cardLikeCounter = cardElement.querySelector('.card__like-counter');
 
   if (meLike(card, profileId)) {
     deleteLike(card._id)
       .then ((res) => {
-        likeCounts.textContent = res.likes.length;
+        cardLikeCounter.textContent = res.likes.length;
         cardLikeButton.classList.remove('card__like-button_is-active');
         card.likes = res.likes;
       })
@@ -55,7 +55,7 @@ function likeCard(card, cardElement, profileId) {
   } else {
     putLike(card._id)
       .then((res) => {
-        likeCounts.textContent = res.likes.length;
+        cardLikeCounter.textContent = res.likes.length;
         cardLikeButton.classList.add('card__like-button_is-active');
         card.likes = res.likes;
       })

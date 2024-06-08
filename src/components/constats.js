@@ -19,6 +19,11 @@ const cardsContainer = content.querySelector(".places__list");
 const formElementAdd = document.querySelector('form[name="new-place"]');
 const namePlaceInput = document.querySelector('.popup__input_type_card-name');
 const linkImagePlaceInput = document.querySelector('.popup__input_type_url');
+// Элементы для попапа аватара
+const formProfileImage = document.forms["edit-avatar"];
+const profileImage = document.querySelector('.profile__image');
+const popupAvatar = document.querySelector('.popup_type_avatar');
+const editAvatarButton = formProfileImage.querySelector('.popup__button');
 // Элементы для валидации
 const popupForm = document.querySelector('.popup__form');
 const popupInput = document.querySelector('.popup__input');
@@ -42,5 +47,9 @@ export {
   namePlaceInput,
   linkImagePlaceInput,
   popupForm,
-  popupInput
+  popupInput,
+  profileImage,
+  popupAvatar,
+  formProfileImage,
+  editAvatarButton
 }
