@@ -117,7 +117,7 @@ function handleEditAvatarFormSubmit(evt) {
 
   patchAvatar(formProfileImage.link.value)
     .then((profile) => {
-      profileImage.style.backgroundImage = `url(${profile.avatar})`;
+      profileImage.setAttribute("style", `background-image: url('${profile.avatar}')`);
       closeModal(popupAvatar);
     })
     .finally(() => (editAvatarButton.textContent = buttonText));
@@ -150,5 +150,5 @@ Promise.all([getUserInfo(), getCards()])
     connectCards(cards, deleteCardFunction, likeCard, openImagePopup, user._id);
   })
   .catch((err) => {
-    console.error(err);
+    console.log(err);
   });
