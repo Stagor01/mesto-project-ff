@@ -20,7 +20,7 @@ import {
 import { enableValidation, clearValidation, validationConfig } from "./components/validation";
 
 // Для запросов на сервер
-import { getCards, getUserInfo, patchUserInfo } from "./components/api";
+import { getCards, getUserInfo, patchUserInfo, postCard } from "./components/api";
 
 let profileId = '';
 
@@ -68,16 +68,17 @@ function setProfileData(nameInput, jobInput) {
   jobInput.value = profileDescription.textContent;
 }
 
-// Обработчик отправки формы
+// Функция редактирования профиля
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
   patchUserInfo(nameInput.value, jobInput.value);
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closeModal(evt.currentTarget.closest('.popup'));
+  closeModal(popupEdit);
 }
 
+// Обработчик редактирования профиля
 formElementEdit.addEventListener('submit', handleEditFormSubmit);
 
 // Функция добавления карточки с местом
@@ -87,10 +88,14 @@ function handleAddPlaceCardFormSubmit(evt) {
   const cardData = {
     name: namePlaceInput.value, 
     link: linkImagePlaceInput.value};
-  const newCard = addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
-  cardsContainer.prepend(newCard);
-  closeModal(evt.currentTarget.closest('.popup'));
-  formElementAdd.reset(); //сбрасываем поля
+  
+  postCard(cardData.name, cardData.link)
+    .then((card) => {
+      const newCard = addCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
+      cardsContainer.prepend(newCard);
+      formElementAdd.reset(); //сбрасываем поля
+      closeModal(popupAdd);
+    })
 }
 
 formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
