@@ -4,26 +4,22 @@ import { addCard, deleteCard, likeCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
-const content = document.querySelector(".content");
-const profileEditButton = content.querySelector(".profile__edit-button");
-const popupEdit = document.querySelector(".popup_type_edit");
+import { content,profileEditButton, popupEdit } from "./components/constats";
 // Элементы для попапа изображения
-const popupImage = document.querySelector('.popup_type_image');
-const image = popupImage.querySelector('.popup__image'); // картинка внутри попапа
-const imageCaption = popupImage.querySelector('.popup__caption');
+import { popupImage, image, imageCaption } from "./components/constats";
 // Элементы для формы редактирования
-const formElementEdit = document.querySelector('form[name="edit-profile"]');
-const nameInput = document.querySelector('.popup__input_type_name');
-const jobInput = document.querySelector('.popup__input_type_description');
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
+import { 
+  formElementEdit, nameInput, jobInput, profileTitle, profileDescription 
+} from "./components/constats";
 // Элементы для добавления карточек
-const profileAddButton = content.querySelector(".profile__add-button");
-const popupAdd = document.querySelector(".popup_type_new-card");
-const cardsContainer = content.querySelector(".places__list");
-const formElementAdd = document.querySelector('form[name="new-place"]');
-const namePlaceInput = document.querySelector('.popup__input_type_card-name');
-const linkImagePlaceInput = document.querySelector('.popup__input_type_url');
+import { 
+  profileAddButton, popupAdd, cardsContainer, formElementAdd, namePlaceInput, linkImagePlaceInput
+} from "./components/constats";
+
+// Для валидации
+import { enableValidation, clearValidation, validationConfig } from "./components/validation";
+
+enableValidation(validationConfig);
 
 // Создаем массив всех попапов
 const popups = document.querySelectorAll(".popup");
@@ -43,11 +39,13 @@ popups.forEach((popup) => {
 
 // Слушатели на открытие попапов
 profileEditButton.addEventListener("click", () => {
+  clearValidation(formElementEdit, validationConfig);
   setProfileData(nameInput, jobInput); // устанавливаем данные по-умолчанию
   openModal(popupEdit);
 });
 
 profileAddButton.addEventListener("click", () => {
+  clearValidation(formElementAdd, validationConfig);
   openModal(popupAdd);
 });
 
