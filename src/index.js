@@ -1,6 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
-import { addCard, deleteCard, likeCard } from "./components/card";
+import { addCard, deleteCard, deleteCardFunction, likeCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
@@ -18,6 +18,11 @@ import {
 
 // Для валидации
 import { enableValidation, clearValidation, validationConfig } from "./components/validation";
+
+// Для запросов на сервер
+import { getCards, getUserInfo } from "./components/api";
+
+let profileId = '';
 
 enableValidation(validationConfig);
 
@@ -86,15 +91,36 @@ function handleAddPlaceCardFormSubmit(evt) {
   const cardData = {
     name: namePlaceInput.value, 
     link: linkImagePlaceInput.value};
-  const newCard = addCard(cardData, deleteCard, likeCard, openImagePopup);
+  const newCard = addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
   cardsContainer.prepend(newCard);
   closeModal(evt.currentTarget.closest('.popup'));
   formElementAdd.reset(); //сбрасываем поля
 }
 
 formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
-
+/*
 // Вывести карточки на страницу
 initialCards.forEach((card) => {
   cardsContainer.append(addCard(card, deleteCard, likeCard, openImagePopup));
 });
+*/
+
+function renderCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
+  cardsContainer.innerHTML;
+  cardData.forEach(cardData => {
+    const cardElement = addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
+    cardsContainer.appendChild(cardElement);
+  })
+}
+
+Promise.all([getUserInfo, getCards])
+  .then(([user, cardData]) => {
+    profileId = user._id;
+    profileTitle.textContent = user.name;
+    profileDescription.textContent = user.about;
+    renderCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  
