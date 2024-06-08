@@ -1,4 +1,3 @@
-import { cardsContainer } from "./constats";
 import { deleteCard, putLike, deleteLike } from "./api";
 // Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
@@ -8,7 +7,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 function addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
     const cardImage = cardElement.querySelector('.card__image');
-    const likeCounts = cardElement.querySelector('.like__counts');
+    const likeCounts = cardElement.querySelector('.card__like-counter');
     cardImage.src = cardData.link;
     cardImage.alt = cardData.name;
     cardElement.querySelector('.card__title').textContent = cardData.name;
