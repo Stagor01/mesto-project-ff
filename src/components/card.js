@@ -18,7 +18,7 @@ function addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profile
       deleteButton.remove();
     } else {
       deleteButton.addEventListener('click', (evt) => {
-        deleteCardFunction(evt, card._id);
+        deleteCardFunction(evt, cardData._id);
       })
     }
 
