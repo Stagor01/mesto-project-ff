@@ -20,7 +20,7 @@ import {
 import { enableValidation, clearValidation, validationConfig } from "./components/validation";
 
 // Для запросов на сервер
-import { getCards, getUserInfo } from "./components/api";
+import { getCards, getUserInfo, patchUserInfo } from "./components/api";
 
 let profileId = '';
 
@@ -68,17 +68,13 @@ function setProfileData(nameInput, jobInput) {
   jobInput.value = profileDescription.textContent;
 }
 
-// Функция редактирования полей в форме редактирования
-function editProfile(name, job) {
-  profileTitle.textContent = name;
-  profileDescription.textContent = job;
-}
-
 // Обработчик отправки формы
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
-  editProfile(nameInput.value, jobInput.value);
+  patchUserInfo(nameInput.value, jobInput.value);
+  profileTitle.textContent = nameInput.value;
+  profileDescription.textContent = jobInput.value;
   closeModal(evt.currentTarget.closest('.popup'));
 }
 
@@ -98,13 +94,8 @@ function handleAddPlaceCardFormSubmit(evt) {
 }
 
 formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
-/*
-// Вывести карточки на страницу
-initialCards.forEach((card) => {
-  cardsContainer.append(addCard(card, deleteCard, likeCard, openImagePopup));
-});
-*/
 
+// Функция, которая выводит карточки на страницу
 function connectCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
   cardsContainer.innerHTML = '';
   cardData.forEach(card => {
