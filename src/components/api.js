@@ -17,7 +17,7 @@ const checkRequest = (res) => {
 
 // Загрузка информации о пользователе
 const getUserInfo = () => {
-  return fetch(`${config.baseUrl}/users.me`, {
+  return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
   }).then((res) => checkRequest(res));
 };
@@ -31,7 +31,7 @@ const getCards = () => {
 
 // Редактирование профиля
 const patchUserInfo = (name, about) => {
-  return fetch(`${config.baseUrl}/users.me`, {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({

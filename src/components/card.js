@@ -12,7 +12,7 @@ function addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profile
     cardImage.src = cardData.link;
     cardImage.alt = cardData.name;
     cardElement.querySelector('.card__title').textContent = cardData.name;
-    likeCounts.textContent = card.likes.length;
+    likeCounts.textContent = cardData.likes.length;
     
     const deleteButton = cardElement.querySelector('.card__delete-button');
     if (profileId != cardData.owner['_id']) {

@@ -105,22 +105,29 @@ initialCards.forEach((card) => {
 });
 */
 
-function renderCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
-  cardsContainer.innerHTML;
-  cardData.forEach(cardData => {
-    const cardElement = addCard(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
+function connectCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
+  cardsContainer.innerHTML = '';
+  cardData.forEach(card => {
+    const cardElement = addCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
     cardsContainer.appendChild(cardElement);
   })
 }
 
-Promise.all([getUserInfo, getCards])
-  .then(([user, cardData]) => {
-    profileId = user._id;
-    profileTitle.textContent = user.name;
-    profileDescription.textContent = user.about;
-    renderCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId);
+// Функция, которая ставит информацию о пользователе на страницу
+let userId = '';
+function setUserInfo(user) {
+  profileTitle.textContent = user.name;
+  profileDescription.textContent = user.about;
+  
+  userId = user._id;
+}
+
+// Выполнить запросы на сервер для получения информации о пользователе и карточках
+Promise.all([getUserInfo(), getCards()])
+  .then(([user, cards]) => {
+    setUserInfo(user);
+    connectCards(cards, deleteCardFunction, likeCard, openImagePopup, user._id);
   })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
   });
-  
