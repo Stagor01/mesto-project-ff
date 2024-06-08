@@ -9,11 +9,11 @@ import { content,profileEditButton, popupEdit } from "./components/constats";
 import { popupImage, image, imageCaption } from "./components/constats";
 // Элементы для формы редактирования
 import { 
-  formElementEdit, nameInput, jobInput, profileTitle, profileDescription 
+  formElementEdit, nameInput, jobInput, profileTitle, profileDescription, editProfileButton
 } from "./components/constats";
 // Элементы для добавления карточек
 import { 
-  profileAddButton, popupAdd, cardsContainer, formElementAdd, namePlaceInput, linkImagePlaceInput
+  profileAddButton, popupAdd, cardsContainer, formElementAdd, namePlaceInput, linkImagePlaceInput, addCardButton
 } from "./components/constats";
 // Элементы для изменения аватара
 import { formProfileImage, profileImage, popupAvatar, editAvatarButton } from "./components/constats";
@@ -80,11 +80,16 @@ function setProfileData(nameInput, jobInput) {
 // Функция редактирования профиля
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
+  const buttonText = editProfileButton.textContent;
+  editProfileButton.textContent = 'Сохранение...'
 
-  patchUserInfo(nameInput.value, jobInput.value);
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
-  closeModal(popupEdit);
+  patchUserInfo(nameInput.value, jobInput.value)
+    .then(() => {
+      profileTitle.textContent = nameInput.value;
+      profileDescription.textContent = jobInput.value;
+      closeModal(popupEdit);
+    })
+    .finally(() => (editProfileButton.textContent = buttonText));
 }
 
 // Обработчик редактирования профиля
@@ -93,6 +98,8 @@ formElementEdit.addEventListener('submit', handleEditFormSubmit);
 // Функция добавления карточки с местом
 function handleAddPlaceCardFormSubmit(evt) {
   evt.preventDefault();
+  const buttonText = addCardButton.textContent;
+  addCardButton.textContent = 'Сохранение...'
 
   const cardData = {
     name: namePlaceInput.value, 
@@ -105,6 +112,7 @@ function handleAddPlaceCardFormSubmit(evt) {
       formElementAdd.reset(); //сбрасываем поля
       closeModal(popupAdd);
     })
+    .finally(() => (addCardButton.textContent = buttonText));
 }
 
 formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
