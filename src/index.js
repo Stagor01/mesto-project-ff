@@ -1,6 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
-import { addCard, deleteCard, deleteCardFunction, likeCard } from "./components/card";
+import { createCard, deleteCard, deleteCardFunction, likeCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
@@ -107,7 +107,7 @@ function handleAddPlaceCardFormSubmit(evt) {
   
   postCard(cardData.name, cardData.link)
     .then((card) => {
-      const newCard = addCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
+      const newCard = createCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
       cardsContainer.prepend(newCard);
       formElementAdd.reset(); //сбрасываем поля
       closeModal(popupAdd);
@@ -137,7 +137,7 @@ formProfileImage.addEventListener('submit', handleEditAvatarFormSubmit);
 function connectCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
   cardsContainer.innerHTML = '';
   cardData.forEach(card => {
-    const cardElement = addCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
+    const cardElement = createCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
     cardsContainer.appendChild(cardElement);
   })
 }
