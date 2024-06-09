@@ -35,8 +35,8 @@ const patchUserInfo = (name, about) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      name: name,
-      about: about,
+      name,
+      about,
     }),
   }).then((res) => checkRequest(res));
 };

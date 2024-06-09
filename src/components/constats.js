@@ -27,9 +27,6 @@ const formProfileImage = document.forms["edit-avatar"];
 const profileImage = document.querySelector('.profile__image');
 const popupAvatar = document.querySelector('.popup_type_avatar');
 const editAvatarButton = formProfileImage.querySelector('.popup__button');
-// Элементы для валидации
-const popupForm = document.querySelector('.popup__form');
-const popupInput = document.querySelector('.popup__input');
 
 export {
   content,
@@ -49,8 +46,6 @@ export {
   formElementAdd,
   namePlaceInput,
   linkImagePlaceInput,
-  popupForm,
-  popupInput,
   profileImage,
   popupAvatar,
   formProfileImage,
