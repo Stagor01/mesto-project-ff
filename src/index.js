@@ -1,6 +1,5 @@
 import "./pages/index.css";
-import { initialCards } from "./scripts/cards";
-import { createCard, deleteCard, deleteCardFunction, likeCard } from "./components/card";
+import { createCard, deleteCardFunction, likeCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 
 // DOM узлы
