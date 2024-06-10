@@ -18,4 +18,25 @@ function closeByEscape(evt) {
   }
 }
 
-export {openModal, closeModal};
+// Функция проверки попал ли клик по оверлею
+function handleCloseModalByOverlay(evt) {
+  if (evt.target === evt.currentTarget) {
+    const openedPopup = document.querySelector('.popup_is-opened');
+    closeModal(openedPopup);
+  }
+}
+
+// Функция установки обработчиков закрытия по клику на кнопку и оверлей
+function setCloseModalByClickListeners(popupList) {
+  popupList.forEach((popup) => {
+    const popupCloseButton = popup.querySelector(".popup__close");
+    // Вешаем обработчик закрытия на кнопку
+    popupCloseButton.addEventListener("click", () => {
+      closeModal(popup);
+    });
+    // Вешаем обработчик закрытия на оверлей
+    popup.addEventListener("click", handleCloseModalByOverlay);
+  });
+}
+
+export {openModal, closeModal, setCloseModalByClickListeners};

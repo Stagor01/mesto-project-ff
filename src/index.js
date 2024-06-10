@@ -1,9 +1,9 @@
 import "./pages/index.css";
 import { createCard, deleteCardFunction, likeCard } from "./components/card";
-import { openModal, closeModal } from "./components/modal";
+import { openModal, closeModal, setCloseModalByClickListeners } from "./components/modal";
 
 // DOM узлы
-import { content,profileEditButton, popupEdit } from "./components/constats";
+import { content,profileEditButton, popupEdit, } from "./components/constats";
 // Элементы для попапа изображения
 import { popupImage, image, imageCaption } from "./components/constats";
 // Элементы для формы редактирования
@@ -28,39 +28,28 @@ let profileId = '';
 enableValidation(validationConfig);
 
 // Создаем массив всех попапов
-const popups = document.querySelectorAll(".popup");
+const popupList = document.querySelectorAll(".popup");
+// Вешаем обработчики на закрытие попапов по кнопке и оверлею
+setCloseModalByClickListeners(popupList);
 
-// Навешиваем слушатели на все попапы на кнопки закрытия и оверлей
-popups.forEach((popup) => {
-  const popupClose = popup.querySelector(".popup__close");
-  popupClose.addEventListener("click", () => {
-    closeModal(popup);
-  });
-  document.addEventListener("click", (evt) => {
-    if (evt.target === popup) {
-      closeModal(popup);
-    }
-  });
-});
-
-// Слушатели на открытие попапов
-profileEditButton.addEventListener("click", () => {
+// Функции-обработчики при открытии попапов
+function handleOpenModalEdit() {
   clearValidation(formElementEdit, validationConfig);
   setProfileData(nameInput, jobInput); // устанавливаем данные по-умолчанию
   openModal(popupEdit);
-});
+}
 
-profileAddButton.addEventListener("click", () => {
+function handleOpenModalAdd() {
   clearValidation(formElementAdd, validationConfig);
   formElementAdd.reset();
   openModal(popupAdd);
-});
+}
 
-profileImage.addEventListener("click", () => {
+function handleOpenModalAvatar() {
   clearValidation(formProfileImage, validationConfig);
   formProfileImage.reset();
   openModal(popupAvatar);
-})
+}
 
 // Функция открытия попапа изображения
 function openImagePopup(imageLink, imageDescription) {
@@ -79,7 +68,7 @@ function setProfileData(nameInput, jobInput) {
 // Функция редактирования профиля
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
-  const buttonText = editProfileButton.textContent;
+  const defaultButtonText = editProfileButton.textContent;
   editProfileButton.textContent = 'Сохранение...'
 
   patchUserInfo(nameInput.value, jobInput.value)
@@ -88,16 +77,16 @@ function handleEditFormSubmit(evt) {
       profileDescription.textContent = jobInput.value;
       closeModal(popupEdit);
     })
-    .finally(() => (editProfileButton.textContent = buttonText));
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => (editProfileButton.textContent = defaultButtonText));
 }
-
-// Обработчик редактирования профиля
-formElementEdit.addEventListener('submit', handleEditFormSubmit);
 
 // Функция добавления карточки с местом
 function handleAddPlaceCardFormSubmit(evt) {
   evt.preventDefault();
-  const buttonText = addCardButton.textContent;
+  const defaultButtonText = addCardButton.textContent;
   addCardButton.textContent = 'Сохранение...'
 
   const cardData = {
@@ -111,50 +100,68 @@ function handleAddPlaceCardFormSubmit(evt) {
       formElementAdd.reset(); //сбрасываем поля
       closeModal(popupAdd);
     })
-    .finally(() => (addCardButton.textContent = buttonText));
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => (addCardButton.textContent = defaultButtonText));
 }
-
-formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
 
 // Функция изменения аватара
 function handleEditAvatarFormSubmit(evt) {
   evt.preventDefault();
-  const buttonText = editAvatarButton.textContent;
+  const defaultButtonText = editAvatarButton.textContent;
   editAvatarButton.textContent = 'Сохранение...'
 
   patchAvatar(formProfileImage.link.value)
     .then((profile) => {
-      profileImage.setAttribute("style", `background-image: url('${profile.avatar}')`);
+      profileImage.style.backgroundImage = `url('${profile.avatar}')`;
       closeModal(popupAvatar);
     })
-    .finally(() => (editAvatarButton.textContent = buttonText));
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => (editAvatarButton.textContent = defaultButtonText));
 }
 
+// Слушатели на открытие попапов
+profileEditButton.addEventListener("click", handleOpenModalEdit);
+
+profileAddButton.addEventListener("click", handleOpenModalAdd);
+
+profileImage.addEventListener("click", handleOpenModalAvatar);
+
+// Обработчик редактирования профиля
+formElementEdit.addEventListener('submit', handleEditFormSubmit);
+
+// Обработчик Добавления карточки
+formElementAdd.addEventListener('submit', handleAddPlaceCardFormSubmit);
+
+// Обработчик изменения аватара
 formProfileImage.addEventListener('submit', handleEditAvatarFormSubmit);
 
 // Функция, которая выводит карточки на страницу
-function connectCards(cardData, deleteCardFunction, likeCard, openImagePopup, profileId) {
+function renderCards(cardsList, deleteCardFunction, likeCard, openImagePopup, profileId) {
   cardsContainer.innerHTML = '';
-  cardData.forEach(card => {
+  cardsList.forEach(card => {
     const cardElement = createCard(card, deleteCardFunction, likeCard, openImagePopup, profileId);
     cardsContainer.appendChild(cardElement);
   })
 }
 
 // Функция, которая ставит информацию о пользователе на страницу
-let userId = '';
 function setUserInfo(user) {
   profileTitle.textContent = user.name;
   profileDescription.textContent = user.about;
+  profileImage.style.backgroundImage = `url('${user.avatar}')`;
   
-  userId = user._id;
+  profileId = user._id;
 }
 
 // Выполнить запросы на сервер для получения информации о пользователе и карточках
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
     setUserInfo(user);
-    connectCards(cards, deleteCardFunction, likeCard, openImagePopup, user._id);
+    renderCards(cards, deleteCardFunction, likeCard, openImagePopup, user._id);
   })
   .catch((err) => {
     console.log(err);
