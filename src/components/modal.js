@@ -21,8 +21,7 @@ function closeByEscape(evt) {
 // Функция проверки попал ли клик по оверлею
 function handleCloseModalByOverlay(evt) {
   if (evt.target === evt.currentTarget) {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    closeModal(openedPopup);
+    closeModal(evt.target);
   }
 }
 

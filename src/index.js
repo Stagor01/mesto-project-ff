@@ -34,20 +34,20 @@ setCloseModalByClickListeners(popupList);
 
 // Функции-обработчики при открытии попапов
 function handleOpenModalEdit() {
-  clearValidation(formElementEdit, validationConfig);
   setProfileData(nameInput, jobInput); // устанавливаем данные по-умолчанию
+  clearValidation(formElementEdit, validationConfig);
   openModal(popupEdit);
 }
 
 function handleOpenModalAdd() {
-  clearValidation(formElementAdd, validationConfig);
   formElementAdd.reset();
+  clearValidation(formElementAdd, validationConfig);
   openModal(popupAdd);
 }
 
 function handleOpenModalAvatar() {
-  clearValidation(formProfileImage, validationConfig);
   formProfileImage.reset();
+  clearValidation(formProfileImage, validationConfig);
   openModal(popupAvatar);
 }
 

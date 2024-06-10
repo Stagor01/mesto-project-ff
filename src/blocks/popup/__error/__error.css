@@ -3,7 +3,6 @@
 }
 
 .form__input-error {
-  position: absolute;
   margin-top: 4px;
   color: #ff0000;
   font-size: 12px;
